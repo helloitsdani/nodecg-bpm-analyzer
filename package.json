@@ -1,12 +1,12 @@
 {
   "name": "nodecg-bpm-analyzer",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "",
   "homepage": "",
   "author": {
     "name": "dani quinn sexton",
     "email": "spells@witch.zone",
-    "url": ""
+    "url": "http://www.glitter.tech"
   },
   "files": [
     "dashboard",
@@ -14,8 +14,12 @@
     "extension.js",
     "extension"
   ],
+  "scripts": {
+    "build": "npm run build:dashboard",
+    "build:dashboard": "webpack --config webpack.config.dashboard.js",
+    "precommit": "lint-staged"
+  },
   "keywords": [
-    "",
     "nodecg-bundle"
   ],
   "nodecg": {
@@ -24,12 +28,35 @@
       {
         "name": "bpm-analyzer",
         "title": "BPM Analyzer",
-        "width": 1,
+        "width": 2,
         "file": "bpm-analyzer.html",
         "headerColor": "#86cecb"
       }
     ]
   },
   "repository": "https://github.com/nodecg/nodecg.git",
-  "license": "MIT"
+  "lint-staged": {
+    "src/client/**/*.ts": "tslint"
+  },
+  "dependencies": {
+    "@polymer/paper-button": "^3.0.0",
+    "@polymer/polymer": "^3.3.1"
+  },
+  "devDependencies": {
+    "clean-webpack-plugin": "^3.0.0",
+    "html-webpack-plugin": "^3.2.0",
+    "husky": "^4.2.3",
+    "lint-staged": "^10.0.8",
+    "prettier": "^1.19.1",
+    "terser-webpack-plugin": "^2.3.5",
+    "ts-loader": "^6.2.2",
+    "tslib": "^1.11.1",
+    "tslint": "^6.0.0",
+    "tslint-config-airbnb": "^5.11.2",
+    "tslint-config-prettier": "^1.18.0",
+    "tslint-eslint-rules": "^5.4.0",
+    "typescript": "^3.8.3",
+    "webpack": "^4.42.0",
+    "webpack-cli": "^3.3.11"
+  }
 }
