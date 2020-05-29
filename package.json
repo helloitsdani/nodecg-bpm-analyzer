@@ -1,0 +1,35 @@
+{
+  "name": "nodecg-bpm-analyzer",
+  "version": "0.0.0",
+  "description": "",
+  "homepage": "",
+  "author": {
+    "name": "dani quinn sexton",
+    "email": "spells@witch.zone",
+    "url": ""
+  },
+  "files": [
+    "dashboard",
+    "graphics",
+    "extension.js",
+    "extension"
+  ],
+  "keywords": [
+    "",
+    "nodecg-bundle"
+  ],
+  "nodecg": {
+    "compatibleRange": ">=1.6.1",
+    "dashboardPanels": [
+      {
+        "name": "bpm-analyzer",
+        "title": "BPM Analyzer",
+        "width": 1,
+        "file": "bpm-analyzer.html",
+        "headerColor": "#86cecb"
+      }
+    ]
+  },
+  "repository": "https://github.com/nodecg/nodecg.git",
+  "license": "MIT"
+}
