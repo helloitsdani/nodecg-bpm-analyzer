@@ -36,14 +36,22 @@
   },
   "repository": "https://github.com/nodecg/nodecg.git",
   "lint-staged": {
-    "src/client/**/*.ts": "tslint"
+    "src/client/**/*.ts": "eslint"
   },
   "dependencies": {
     "@polymer/paper-button": "^3.0.0",
     "@polymer/polymer": "^3.3.1"
   },
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^3.0.2",
+    "@typescript-eslint/eslint-plugin-tslint": "^3.0.2",
+    "@typescript-eslint/parser": "^3.0.2",
     "clean-webpack-plugin": "^3.0.0",
+    "eslint": "^7.1.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-jsdoc": "^26.0.0",
+    "eslint-plugin-prefer-arrow": "^1.2.1",
     "html-webpack-plugin": "^3.2.0",
     "husky": "^4.2.3",
     "lint-staged": "^10.0.8",
