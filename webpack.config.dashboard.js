@@ -39,9 +39,10 @@ module.exports = {
     },
   },
   module: {
-    rules: [
-      { test: /\.tsx?$/, loader: "ts-loader" }
-    ]
+    rules: [{ test: /\.tsx?$/, loader: 'ts-loader' }],
+  },
+  resolve: {
+    extensions: ['.ts', '.js'],
   },
   plugins: [new CleanWebpackPlugin(), ...pages],
   output: {

@@ -1,5 +1,5 @@
-import '../components/bpm-analyzer/bpm-analyzer.ts'
+import '../components/bpm-analyzer-panel/bpm-analyzer-panel'
 
 document.getElementById('app')!.innerHTML = `
-  <bpm-analyzer></bpm-analyzer>
+  <bpm-analyzer-panel></bpm-analyzer-panel>
 `

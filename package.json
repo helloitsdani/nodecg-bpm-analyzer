@@ -39,6 +39,7 @@
     "src/client/**/*.ts": "eslint"
   },
   "dependencies": {
+    "@polymer/iron-pages": "^3.0.1",
     "@polymer/paper-button": "^3.0.0",
     "@polymer/paper-radio-button": "^3.0.1",
     "@polymer/paper-radio-group": "^3.0.1",
