@@ -98,7 +98,7 @@ class BPMAnalyzerPanel extends Polymer.PolymerElement {
       },
       bpm: {
         type: Number,
-        value: 0,
+        value: 90,
         observer: '_onBPMChange',
       },
     }

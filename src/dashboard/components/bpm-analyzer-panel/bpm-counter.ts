@@ -38,22 +38,18 @@ class BPMCounter extends Polymer.PolymerElement {
         type: Number,
         reflectToAttribute: true,
         notify: true,
+        value: 90,
       },
       sampleSize: {
         type: Number,
         value: 2048,
       },
-      bars: {
-        type: Number,
-        value: 30,
-      },
     }
   }
 
   deviceId: string = ''
-  bpm: number = 0
+  bpm: number = 90
   sampleSize: number = 2048
-  bars: number = 30
 
   _context?: AudioContext
   _analyzer?: AnalyserNode
@@ -80,6 +76,7 @@ class BPMCounter extends Polymer.PolymerElement {
 
     const stream = await navigator.mediaDevices.getUserMedia(this._getDeviceConstraints(this.deviceId))
     this._streamNode = this._context.createMediaStreamSource(stream)
+
     this._streamNode.connect(this._analyzer)
 
     this._scheduleMeasurement()
@@ -92,15 +89,16 @@ class BPMCounter extends Polymer.PolymerElement {
   }
 
   _scheduleMeasurement() {
-    this._rafTimeout = window.setTimeout(this._measureBPM.bind(this), 1000 / 60)
+    this._rafTimeout = window.requestAnimationFrame(this._measureBPM.bind(this))
   }
 
   _cancelMeasurement() {
-    window.clearTimeout(this._rafTimeout!)
+    window.cancelAnimationFrame(this._rafTimeout!)
   }
 
   _measureBPM(timestamp: number) {
     const data = new Uint8Array(this.sampleSize)
+
     this._analyzer!.getByteFrequencyData(data)
 
     this._beatDetektor.process(timestamp / 1000, data)
