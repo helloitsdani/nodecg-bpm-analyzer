@@ -6,7 +6,7 @@ import '@polymer/paper-radio-group/paper-radio-group'
 
 import './bpm-counter'
 
-nodecg.Replicant('bpm', 'nodecg-bpm-analyzer', {
+const bpm = nodecg.Replicant('bpm', 'nodecg-bpm-analyzer', {
   persistent: false,
 })
 
@@ -127,7 +127,7 @@ class BPMAnalyzerPanel extends Polymer.PolymerElement {
   }
 
   _onBPMChange(newBPM: number) {
-    console.log(newBPM)
+    bpm.value = newBPM
   }
 
   async ready() {
