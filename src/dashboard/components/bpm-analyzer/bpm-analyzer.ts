@@ -1,8 +1,7 @@
 import * as Polymer from '@polymer/polymer'
 import '@polymer/paper-button/paper-button'
-import '@polymer/paper-dropdown-menu/paper-dropdown-menu'
-import '@polymer/paper-listbox/paper-listbox'
-import '@polymer/paper-item/paper-item'
+import '@polymer/paper-radio-button/paper-radio-button'
+import '@polymer/paper-radio-group/paper-radio-group'
 
 nodecg.Replicant('bpm', 'nodecg-bpm-analyzer', {
   persistent: false,
@@ -10,23 +9,36 @@ nodecg.Replicant('bpm', 'nodecg-bpm-analyzer', {
 
 const getAudioInputs = async () => {
   const inputs = await navigator.mediaDevices.enumerateDevices()
-  return inputs.filter(input => input.kind === 'audioinput')
+  return inputs.filter(input => input.kind === 'audioinput' && input.deviceId !== 'default')
 }
 
 class BPMAnalyzer extends Polymer.PolymerElement {
   static get template() {
     return Polymer.html`
-    <div>
-      measure it {{isMeasuring}}
-    </div>
+    <style>
+      :root {
+        --primary-text-color: #fff;
+        --paper-radio-button-checked-color: #86cecb;
+      }
 
-    <paper-dropdown-menu label="Devices">
-      <paper-listbox slot="dropdown-content" selected="0">
-        <template is="dom-repeat" items="{{devices}}">
-          <paper-item value="{{item.deviceId}}">{{item.label}}</paper-item>
-        </template>
-      </paper-listbox>
-    </paper-dropdown-menu>
+      paper-button {
+        background: #86cecb;
+        color: #2F3A4F;
+        display: flex;
+        flex-flow: row nowrap;
+        flex-direction: row;
+      }
+
+      .c-device-list {
+        margin-bottom: 12px;
+      }
+    </style>
+
+    <paper-radio-group class="c-device-list" selected="{{selectedDeviceId}}" label="Devices">
+      <template is="dom-repeat" items="{{devices}}">
+        <paper-radio-button name="{{item.deviceId}}">{{item.label}}</paper-radio-button>
+      </template>
+    </paper-radio-group>
 
     <paper-button raised="" on-tap="startMeasuring">
       Start
@@ -48,7 +60,7 @@ class BPMAnalyzer extends Polymer.PolymerElement {
         type: Array,
         value: [],
       },
-      selectedDevice: {
+      selectedDeviceId: {
         type: String,
         value: '',
       },
