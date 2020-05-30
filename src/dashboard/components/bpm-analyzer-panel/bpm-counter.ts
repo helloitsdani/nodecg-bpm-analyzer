@@ -1,5 +1,7 @@
 import * as Polymer from '@polymer/polymer'
 
+import BeatDetektor from './BeatDetektor'
+
 class BPMCounter extends Polymer.PolymerElement {
   static get template() {
     return Polymer.html`
@@ -28,23 +30,93 @@ class BPMCounter extends Polymer.PolymerElement {
   static get properties() {
     return {
       deviceId: String,
+      deviceConstraints: {
+        type: Object,
+        computed: '_getDeviceConstraints(deviceId)',
+      },
       bpm: {
         type: Number,
         reflectToAttribute: true,
         notify: true,
+      },
+      sampleSize: {
+        type: Number,
+        value: 2048,
+      },
+      bars: {
+        type: Number,
+        value: 30,
       },
     }
   }
 
   deviceId: string = ''
   bpm: number = 0
+  sampleSize: number = 2048
+  bars: number = 30
 
-  ready() {
-    super.ready()
+  _context?: AudioContext
+  _analyzer?: AnalyserNode
+  _beatDetektor?: any
+  _streamNode?: MediaStreamAudioSourceNode
+  _rafTimeout?: number
 
-    setTimeout(() => {
-      this.set('bpm', 69)
-    }, 1000)
+  _getDeviceConstraints(deviceId: string): MediaStreamConstraints {
+    return {
+      audio: {
+        deviceId: {
+          exact: deviceId,
+        },
+      },
+    }
+  }
+
+  async _start() {
+    this._context = new AudioContext()
+    this._analyzer = this._context.createAnalyser()
+    this._analyzer.fftSize = this.sampleSize
+
+    this._beatDetektor = new BeatDetektor(undefined, undefined, undefined)
+
+    const stream = await navigator.mediaDevices.getUserMedia(this._getDeviceConstraints(this.deviceId))
+    this._streamNode = this._context.createMediaStreamSource(stream)
+    this._streamNode.connect(this._analyzer)
+
+    this._scheduleMeasurement()
+  }
+
+  _stop() {
+    this._cancelMeasurement()
+    this._analyzer?.disconnect()
+    this._streamNode?.disconnect()
+  }
+
+  _scheduleMeasurement() {
+    this._rafTimeout = window.setTimeout(this._measureBPM.bind(this), 1000 / 60)
+  }
+
+  _cancelMeasurement() {
+    window.clearTimeout(this._rafTimeout!)
+  }
+
+  _measureBPM(timestamp: number) {
+    const data = new Uint8Array(this.sampleSize)
+    this._analyzer!.getByteFrequencyData(data)
+
+    this._beatDetektor.process(timestamp / 1000, data)
+    this.set('bpm', this._beatDetektor.win_bpm_int_lo)
+
+    this._scheduleMeasurement()
+  }
+
+  connectedCallback() {
+    super.connectedCallback()
+    this._start()
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback()
+    this._stop()
   }
 }
 

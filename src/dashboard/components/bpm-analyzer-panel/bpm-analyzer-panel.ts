@@ -55,7 +55,7 @@ class BPMAnalyzerPanel extends Polymer.PolymerElement {
       </section>
 
       <section name="analyzer">
-        <template is="dom-if" if="[[isMeasuring]]">
+        <template is="dom-if" if="[[isMeasuring]]" restamp>
           <p>
             Listening to <strong>[[selectedDevice.label]]</strong>...
           </p>
@@ -127,6 +127,7 @@ class BPMAnalyzerPanel extends Polymer.PolymerElement {
   }
 
   _onBPMChange(newBPM: number) {
+    console.log('new bpm', newBPM)
     bpm.value = newBPM
   }
 
